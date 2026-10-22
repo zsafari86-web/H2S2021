@@ -6,93 +6,117 @@
 <title>محاسبه طول مماس‌های مشترک و وتر مشترک</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f2f8f7;--ink:#12303a;--teal:#0b7f80;--blue:#2563eb;--pink:#d1346f;--am:#c98500;--card:#fff;--line:#cfe3e0;--ok:#1b8f5a;--mut:#6a858c;--pur:#8e63f2;box-sizing:border-box}
+:root{--bg:#f2f8f7;--ink:#12303a;--teal:#0b7f80;--blue:#2563eb;--pink:#d1346f;--am:#c98500;--card:#fff;--line:#cfe3e0;--ok:#1b8f5a;--mut:#6a858c;--pur:#8e63f2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1b1f;--ink:#e3f1ef;--teal:#37c4be;--blue:#60a5fa;--pink:#ff7aa8;--am:#ffc247;--card:#16282d;--line:#27424a;--ok:#4fd592;--mut:#97b3b8;--pur:#c084fc}}
 :root[data-theme="dark"]{--bg:#0e1b1f;--ink:#e3f1ef;--teal:#37c4be;--blue:#60a5fa;--pink:#ff7aa8;--am:#ffc247;--card:#16282d;--line:#27424a;--ok:#4fd592;--mut:#97b3b8;--pur:#c084fc}
 *{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;font-family:Vazirmatn,Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:2.1;
 background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px}
-header{background:linear-gradient(135deg,var(--teal),var(--blue));color:#fff;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-header b{font-size:1.05rem;font-weight:800}
-.author{font-size:.82rem;font-weight:600;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:8px}
+header{background:linear-gradient(135deg,var(--teal),var(--blue));color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+header b{font-size:1.1rem;font-weight:800}
+.author{font-size:.85rem;font-weight:600;background:rgba(255,255,255,.2);padding:2px 10px;border-radius:8px}
 .dots{display:flex;gap:5px;flex-wrap:wrap}
 .dots button{width:28px;height:28px;border-radius:50%;border:2px solid #fff;background:transparent;color:#fff;font:inherit;font-size:.8rem;cursor:pointer;line-height:1}
 .dots button.on{background:#fff;color:var(--teal);font-weight:800}
 .skip{border:0;background:rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:2px 12px;font:inherit;cursor:pointer}
 main{max-width:760px;margin:0 auto;padding:0 14px 60px}
-
-/* کادر چسبنده با ارتفاع کنترل‌شده برای دیده شدن دائمی شکل */
-#fig{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:6px 0;border-bottom:1px solid var(--line);box-shadow:0 4px 12px -4px rgba(0,0,0,.08)}
+#fig{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;padding-top:10px;background:var(--bg)}
 #fig:empty{display:none}
-svg{user-select:none;-webkit-user-select:none;width:100%;height:auto;display:block;direction:ltr;touch-action:none;max-height:27vh}
-
-#txt>*{scroll-margin-top:34vh}
-h2{margin:12px 0 6px;font-size:1.25rem;color:var(--teal);font-weight:800}
+#txt>*{scroll-margin-top:46vh}
+h2{margin:14px 0 6px;font-size:1.3rem;color:var(--teal);font-weight:800}
 .p,.ex{margin:8px 0}
-.obj{border:2px solid var(--blue);border-right:6px solid var(--blue);border-radius:10px;background:var(--card);padding:8px 14px;margin:10px 0;font-weight:700;color:var(--blue);line-height:2.2}
-.d{border:2px solid var(--teal);border-radius:12px;background:var(--card);padding:10px 16px;margin:10px 0;font-weight:600}
-.ex{border-right:4px solid var(--pink);padding:6px 14px;background:var(--card);border-radius:6px}
-
-/* استایل ریاضی مجزا */
-.f,.f2{direction:ltr!important;text-align:center;font-weight:700;color:var(--pink);margin:8px auto;padding:6px 12px;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;line-height:1.8;background:rgba(209,52,111,.05);border-radius:8px;border:1px dashed rgba(209,52,111,.25);unicode-bidi:isolate}
+.obj{border:2px solid var(--blue);border-right:6px solid var(--blue);border-radius:10px;background:var(--card);padding:10px 16px;margin:12px 0;font-weight:700;color:var(--blue);line-height:2.2}
+.d{border:2px solid var(--teal);border-radius:12px;background:var(--card);padding:12px 16px;margin:12px 0;font-weight:600;line-height:2.2}
+.ex{border-right:4px solid var(--pink);padding:6px 14px;background:var(--card);border-radius:6px;line-height:2.2}
+.f,.f2{direction:ltr!important;text-align:center;font-weight:700;color:var(--pink);margin:8px auto;padding:6px 12px;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;line-height:1.8;background:rgba(209,52,111,.04);border-radius:8px;border:1px dashed rgba(209,52,111,.2);unicode-bidi:isolate}
 .f{font-size:1.22rem;min-height:2.2em}
 .f2{font-size:1.12rem}
 
+/* ساختار ریاضی رادیکال و فرمول بدون شکستگی */
 .math-tag{direction:ltr!important;font-family:inherit;font-weight:700;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:4px;color:var(--pink);background:rgba(209,52,111,.06);padding:3px 8px;border-radius:6px;border:1px dashed rgba(209,52,111,.25);font-size:1rem}
-.rad{display:inline-flex;align-items:baseline;direction:ltr;unicode-bidi:isolate;white-space:nowrap;margin:0 2px}
-.r-sym{font-size:1.2em;line-height:1;margin-right:1px;font-family:system-ui,-apple-system,sans-serif;user-select:none}
-.r-body{border-top:2px solid currentColor;padding:0 3px;line-height:1.2;display:inline-block;white-space:nowrap;font-size:.95em}
+
+.rad {
+    display: inline-flex;
+    align-items: flex-start;
+    direction: ltr;
+    unicode-bidi: isolate;
+    white-space: nowrap;
+    margin: 0 3px;
+    vertical-align: middle;
+    position: relative;
+    top: 1px;
+}
+.r-sym {
+    font-size: 1.35em;
+    line-height: 1;
+    margin-right: -2px;
+    font-family: Arial, Helvetica, sans-serif;
+    user-select: none;
+}
+.r-body {
+    border-top: 2.5px solid currentColor;
+    padding: 0 6px;
+    padding-top: 1px;
+    line-height: 1.3;
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 1em;
+}
+/* استایل برای جلوگیری از شکستن عبارات ریاضی درون متن */
+.math-inline {
+    display: inline-block;
+    direction: ltr;
+    unicode-bidi: isolate;
+    white-space: nowrap;
+    vertical-align: middle;
+    margin: 0 2px;
+}
+
 .fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .35em;line-height:1.2}
 .fr .n{border-bottom:2px solid currentColor;padding:0 .45em}.fr .dn{padding:0 .45em}
-
 .typing::after{content:"▍";color:var(--pink);animation:bl 1s steps(2) infinite}
 @keyframes bl{50%{opacity:0}}
-.demo,.quiz{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px;margin:10px 0}
-#fig .demo{margin:0;box-shadow:none;border:0;padding:4px}
-
-/* نوار محاسبات فشرده */
-.ctl-panel{direction:rtl;background:rgba(0,0,0,.025);border-radius:8px;padding:4px 8px;margin-top:4px;border:1px solid var(--line)}
-.ctl-row{display:flex;align-items:center;gap:8px;font-size:.82rem}
-.ctl-row label{font-weight:700;color:var(--teal);white-space:nowrap}
-.ctl-row input[type=range]{flex:1;accent-color:var(--teal);cursor:pointer;height:4px}
-.ctl-val{font-weight:700;direction:ltr;min-width:32px;text-align:left}
-.stat-strip{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:.8rem;padding-top:4px;border-top:1px dashed var(--line);flex-wrap:wrap}
-.stat-strip b{direction:ltr;display:inline-block;color:var(--pink)}
-
-button.go,.opt{font:inherit;cursor:pointer;border-radius:10px;border:2px solid var(--teal);background:transparent;color:var(--ink);padding:6px 16px}
-button.go{background:var(--pink);border-color:var(--pink);color:#fff;font-weight:600;margin:10px 0}
-.opts{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;justify-content:center}
-.opt{min-width:90px;font-weight:700;direction:ltr!important;unicode-bidi:isolate}
+.demo,.quiz{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px;margin:12px 0; text-align: right;}
+#fig .demo{margin:0;box-shadow:0 8px 10px -8px rgba(0,0,0,.4)}
+svg{user-select:none;-webkit-user-select:none;width:100%;height:auto;display:block;direction:ltr;touch-action:none;max-height:38vh}
+button.go,.opt{font:inherit;cursor:pointer;border-radius:10px;border:2px solid var(--teal);background:transparent;color:var(--ink);padding:4px 14px}
+button.go{background:var(--pink);border-color:var(--pink);color:#fff;font-weight:600;margin:8px 0}
+.opts{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.opt{min-width:90px;font-weight:600;text-align: right; line-height: 1.6; padding: 8px 12px;}
 .opt.ok{background:var(--ok);border-color:var(--ok);color:#fff}
 .opt.no{border-color:var(--pink);color:var(--pink)}
-.fb{min-height:1.8em;color:var(--mut);text-align:center;font-weight:600}
+.fb{min-height:1.8em;color:var(--mut); text-align: right; direction: rtl; padding-top: 8px;}
 
-/* خطوط و دایره‌ها در SVG */
-circle.cir-blue{fill:none;stroke:var(--blue);stroke-width:2.6}
-circle.cir-pur{fill:none;stroke:var(--pur);stroke-width:2.6}
+/* استایل جدول بهینه‌شده برای موبایل و تبلت */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0;border-radius:12px;border:1px solid var(--line);background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.tbl-hint{font-size:.78rem;color:var(--mut);text-align:center;padding:6px;background:rgba(11,127,128,.05);border-bottom:1px solid var(--line)}
+.tbl{width:100%;min-width:520px;border-collapse:collapse}
+.tbl th,.tbl td{border:1px solid var(--line);padding:10px 12px;text-align:center;font-size:.9rem;vertical-align:middle}
+.tbl th{background:rgba(11,127,128,.14);color:var(--teal);font-weight:800;white-space:nowrap}
+.tbl tr:hover{background:rgba(11,127,128,.04)}
+.tbl .badge{display:inline-block;padding:2px 8px;border-radius:6px;font-weight:700;font-size:.85rem}
+.badge-ext{background:rgba(37,99,235,.12);color:var(--blue)}
+.badge-int{background:rgba(209,52,111,.12);color:var(--pink)}
+
+/* پالت رنگی SVG */
+circle.cir-blue{fill:none;stroke:var(--blue);stroke-width:2.2}
+circle.cir-pur{fill:none;stroke:var(--pur);stroke-width:2.2}
 circle.aux{fill:none;stroke:var(--pur);stroke-width:2;stroke-dasharray:5 4}
-.ln-blue{stroke:var(--blue);stroke-width:2.2}
-.ln-pur{stroke:var(--pur);stroke-width:2.2}
+.ln-blue{stroke:var(--blue);stroke-width:2}
+.ln-pur{stroke:var(--pur);stroke-width:2}
 .ln{stroke:var(--ink);stroke-width:1.8}
-.ln-tan{stroke:var(--teal);stroke-width:2.8;stroke-linecap:round}
-.ln-help{stroke:var(--pink);stroke-width:2.2;stroke-dasharray:5 4}
+.ln-tan{stroke:var(--teal);stroke-width:2.6;stroke-linecap:round}
+.ln-help{stroke:var(--pink);stroke-width:2;stroke-dasharray:5 4}
 .pt{fill:var(--card);stroke:var(--ink);stroke-width:2}
 .pt-blue{fill:var(--blue);stroke:#fff;stroke-width:2}
 .pt-pur{fill:var(--pur);stroke:#fff;stroke-width:2}
-.pt-tan{fill:var(--am);stroke:var(--ink);stroke-width:2}
+.pt-tan{fill:var(--am);stroke:var(--ink);stroke-width:1.8}
 .tf{fill:none;stroke:none}
 .tf.h1{fill:var(--blue);fill-opacity:.22;stroke:var(--blue);stroke-width:2}
 .tf.h2{fill:var(--pur);fill-opacity:.22;stroke:var(--pur);stroke-width:2}
 .sq{fill:none;stroke:var(--pink);stroke-width:2}
 text.lb{font:600 15px Vazirmatn,sans-serif;fill:var(--ink)}
-
-/* جدول خلاصه فرمول‌ها */
-.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0;border-radius:12px;border:1px solid var(--line);background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,.03)}
-.tbl-hint{font-size:.78rem;color:var(--mut);text-align:center;padding:6px;background:rgba(11,127,128,.05);border-bottom:1px solid var(--line)}
-.tbl{width:100%;min-width:530px;border-collapse:collapse}
-.tbl th,.tbl td{border:1px solid var(--line);padding:10px 12px;text-align:center;font-size:.9rem;vertical-align:middle;line-height:1.8}
-.tbl th{background:rgba(11,127,128,.14);color:var(--teal);font-weight:800;white-space:nowrap}
-.tbl tr:hover{background:rgba(11,127,128,.04)}
 
 .st{font-weight:800;color:var(--pink);margin:14px 0 2px}
 .nw{stroke-dasharray:1;stroke-dashoffset:1;animation:dr 1.2s ease forwards}
@@ -116,24 +140,29 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const el=(t,c)=>{const e=document.createElement(t);if(c)e.className=c;return e};
 let fast=false,run=0,F=null;
 $('#skip').onclick=()=>fast=true;
+const scroll=e=>{const r=e.getBoundingClientRect();if(r.bottom>innerHeight-30)window.scrollBy({top:r.bottom-innerHeight+90,behavior:'auto'})};
 
-const scroll=e=>{
- const figEl=$('#fig');
- const figH=figEl?(figEl.offsetHeight||0):0;
- const r=e.getBoundingClientRect();
- if(r.bottom>window.innerHeight-25){
-  window.scrollBy({top:r.bottom-window.innerHeight+85,behavior:'auto'});
- }
- if(r.top<figH+10){
-  window.scrollBy({top:r.top-figH-20,behavior:'auto'});
- }
-};
-
+// تابع اصلاح‌شده برای جلوگیری از شکستن عبارات ریاضی، بدون دست زدن به کدهای HTML
 function formatMath(str){
  let s = str;
- s = s.replace(/√\(((?:\([^()]+\)|[^()])+)\)/g, '<span class="rad"><span class="r-sym">√</span><span class="r-body">$1</span></span>');
- s = s.replace(/√([0-9a-zA-Z\u200E′]+)/g, '<span class="rad"><span class="r-sym">√</span><span class="r-body">$1</span></span>');
+ // ۱. رادیکال‌ها
+ s = s.replace(/√\(((?:\([^()]+\)|[^()])+)\)/g, '<span class="rad"><span class="r-sym">√</span><span class="r-body">($1)</span></span>');
+ s = s.replace(/√([0-9a-zA-Z\u200E′²³]+)/g, '<span class="rad"><span class="r-sym">√</span><span class="r-body">$1</span></span>');
+ // ۲. کسرها
  s = s.replace(/(\S+) \/ (\S+)/g, '<span class="fr"><span class="n">$1</span><span class="dn">$2</span></span>');
+ 
+ // ۳. ایزوله کردن عبارات داخل پرانتز که شامل حروف انگلیسی هستند (مثل (R + R′)²)
+ s = s.replace(/\(([a-zA-Z0-9′²³\s\+\-]+)\)²/g, '<span class="math-inline">($1)²</span>');
+ s = s.replace(/\(([a-zA-Z0-9′²³\s\+\-]+)\)/g, function(match, p1) {
+     if (/[a-zA-Z]/.test(p1)) {
+         return '<span class="math-inline">(' + p1 + ')</span>';
+     }
+     return match;
+ });
+ 
+ // ۴. ایزوله کردن متغیرهایی مثل R + R′ در متن
+ s = s.replace(/(R \s*[\+\-]\s*R′)/g, '<span class="math-inline">$1</span>');
+ 
  return s;
 }
 
@@ -159,111 +188,163 @@ async function typeFormula(e,str,tok){
 
 const S=[
 {k:'fig_ext',h:'۱. محاسبهٔ طول مماس مشترک خارجی',items:[
-['obj','🎯 هدف این بخش: کشف فرمول طول مماس مشترک خارجی (TT′\u200E) با استفاده از مثلث قائم‌الزاویهٔ کمکی و قضیهٔ فیثاغورس.'],
-['p','دو دایره به مرکزهای O (آبی) و O′\u200E (بنفش) با فاصلهٔ مرکزهای d = OO′\u200E رسم می‌کنیم.','circ1 circ2 pO pOp sOO',{circ1:1,circ2:2}],
-['p','خط m در نقاط T و T′\u200E بر دو دایره مماس خارجی است.','lineM pT pTp',{lineM:1,pT:1,pTp:1}],
-['p','شعاع‌های OT و O′T′\u200E را به نقاط تماس رسم می‌کنیم که بر خط مماس عمودند.','sOT sOpTp sqT sqTp',{sOT:1,sOpTp:2,sqT:1,sqTp:2}],
+['obj','🎯 هدف این بخش: می‌خواهیم فرمولی برای محاسبهٔ طول مماس مشترک خارجی (TT′\u200E) برحسب فاصلهٔ مرکزها (d) و شعاع‌های دو دایره (R و R′\u200E) به دست آوریم.'],
+['p','ابتدا دو دایره به مرکزهای O (آبی) و O′\u200E (بنفش) با شعاع‌های R و R′\u200E رسم می‌کنیم که فاصلهٔ مرکزهای آن‌ها d = OO′\u200E است.','circ1 circ2 pO pOp sOO',{circ1:1,circ2:2}],
+['p','خط m در نقاط T و T′\u200E بر دو دایره مماس خارجی است. این خط و نقاط تماس را رسم می‌کنیم.','lineM pT pTp',{lineM:1,pT:1,pTp:1}],
+['p','شعاع‌های OT و O′T′\u200E را به نقاط تماس وصل می‌کنیم. این شعاع‌ها بر خط مماس عمودند.','sOT sOpTp sqT sqTp',{sOT:1,sOpTp:2,sqT:1,sqTp:2}],
 ['btn','گام اول: رسم خط کمکی موازی'],
-['st','گام ۱: رسم پاره‌خط O′H'],
+['st','گام ۱: رسم خط موازی O′H'],
 ['p','از مرکز O′\u200E خطی موازی مماس رسم می‌کنیم تا شعاع OT را در نقطهٔ H قطع کند.','lineOpH pH sqH',{lineOpH:2,pH:2,sqH:2}],
 ['btn','گام دوم: بررسی مستطیل و اندازه‌ها'],
-['st','گام ۲: مستطیل TT′O′H و تفاضل دو شعاع'],
-['p','چهارضلعی TT′O′H مستطیل است؛ پس TT′ = O′H و پاره‌خط OH برابر با تفاضل دو شعاع است:','rectH',{rectH:1}],
+['st','گام ۲: مستطیل کمکی TT′O′H'],
+['p','چهارضلعی TT′O′H دارای چهار زاویهٔ قائمه است، پس مستطیل است؛ بنابراین TT′ = O′H و TH = R′\u200E.','rectH',{rectH:1}],
+['p','در نتیجه پاره‌خط OH برابر است با تفاضل دو شعاع:'],
 ['f2','OH = OT - TH = R - R′'],
-['btn','گام سوم: رابطهٔ فیثاغورس'],
+['btn','گام سوم: به کار بردن قضیهٔ فیثاغورس'],
 ['st','گام ۳: قضیهٔ فیثاغورس در مثلث O′HO'],
-['p','در مثلث قائم‌الزاویهٔ O′HO وتر برابر d و ضلع قائمه OH برابر R - R′\u200E است:','triH',{triH:2}],
+['p','در مثلث قائم‌الزاویهٔ O′HO، وتر برابر d و ضلع قائمه OH برابر R - R′\u200E است:','triH',{triH:2}],
+['f2','O′H² + OH² = OO′²'],
 ['f2','O′H² + (R - R′)² = d²'],
 ['f2','O′H = √(d² - (R - R′)²)'],
-['d','فرمول طول مماس مشترک خارجی:'],
+['d','قضیه طول مماس مشترک خارجی:'],
 ['f','TT′ = √(d² - (R - R′)²)'],
-['ex','مثال عددی: اگر فاصلهٔ مرکزها d = 13 و شعاع‌ها R = 8 و R′ = 3 باشد:'],
-['f2','TT′ = √(13² - (8 - 3)²) = √(169 - 25) = √144 = 12'],
-['quiz',{q:'اگر فاصلهٔ مرکزها d = 10 و شعاع‌ها R = 9 و R′ = 1 باشد، طول مماس خارجی چقدر است؟',o:['TT′ = 6','TT′ = 8','TT′ = 10'],a:0,h:'تفاضل شعاع‌ها 9 - 1 = 8 است. سپس √(10² - 8²).',e:'√(100 - 64) = √36 = 6.'}]]},
+['ex','مثال عددی: فاصلهٔ مرکزها d = 13 و شعاع‌ها R = 8 و R′ = 3 است. طول مماس خارجی را حساب می‌کنیم:'],
+['f2','TT′ = √(13² - (8 - 3)²)'],
+['f2','TT′ = √(169 - 25) = √144 = 12'],
+['quiz',{q:'اگر فاصلهٔ مرکزها d = 10 و شعاع‌ها R = 9 و R′ = 1 باشد، طول مماس مشترک خارجی چقدر است؟',o:['TT′ = 6','TT′ = 8','TT′ = 9'],a:0,h:'تفاضل شعاع‌ها 9 - 1 = 8 است. سپس فیثاغورس: √(10² - 8²).',e:'√(100 - 64) = √36 = 6.'}]]},
 
 {k:'fig_aux',h:'۲. رسم مماس مشترک با دایرهٔ کمکی',items:[
-['obj','🎯 هدف این بخش: آموزش روش ترسیم دقیق مماس مشترک خارجی به کمک پرگار و دایرهٔ کمکی.'],
+['obj','🎯 هدف این بخش: آموزش روش ترسیم دقیق مماس مشترک خارجی با استفاده از خط‌کش و پرگار به کمک یک دایرهٔ کمکی.'],
 ['p','دو دایره مفروض هستند و می‌خواهیم مماس مشترک خارجی آن‌ها را رسم کنیم.','circ1 circ2 pO pOp sOO',{circ1:1,circ2:2}],
 ['btn','گام اول: رسم دایرهٔ کمکی'],
 ['st','گام ۱: رسم دایره به شعاع R - R′\u200E'],
 ['p','به مرکز O دایره‌ای کمکی با شعاع تفاضل دو شعاع (R - R′\u200E) با خط‌چین بنفش رسم می‌کنیم.','circAux',{circAux:1}],
 ['btn','گام دوم: مماس از O′\u200E بر دایرهٔ کمکی'],
 ['st','گام ۲: رسم خط مماس O′H'],
-['p','از مرکز O′\u200E خطی مماس بر این دایرهٔ کمکی رسم می‌کنیم تا نقطهٔ تماس H حاصل شود.','lineOpH pH sqH',{lineOpH:2,pH:2,sqH:2}],
-['btn','گام سوم: امتداد دادن شعاع'],
+['p','از نقطهٔ O′\u200E خطی مماس بر این دایرهٔ کمکی رسم می‌کنیم تا نقطهٔ تماس H به دست آید.','lineOpH pH sqH',{lineOpH:2,pH:2,sqH:2}],
+['btn','گام سوم: امتداد دادن شعاع و تعیین نقاط تماس'],
 ['st','گام ۳: به دست آوردن نقاط تماس T و T′\u200E'],
-['p','شعاع OH را امتداد می‌دهیم تا دایرهٔ آبی را در نقطهٔ T قطع کند. سپس خطی موازی آن از O′\u200E رسم می‌کنیم تا T′\u200E مشخص شود.','sOT pT sOpTp pTp sqTp',{sOT:1,pT:1,sOpTp:2,pTp:2}],
+['p','شعاع OH را امتداد می‌دهیم تا دایرهٔ آبی را در نقطهٔ T قطع کند.','sOT pT',{sOT:1,pT:1}],
+['p','از مرکز O′\u200E خطی موازی OT رسم می‌کنیم تا نقطهٔ T′\u200E روی دایرهٔ بنفش تعیین شود.','sOpTp pTp sqTp',{sOpTp:2,pTp:2}],
+['btn','گام چهارم: رسم مماس نهایی'],
+['st','گام ۴: خط مماس مشترک TT′\u200E'],
 ['p','خط گذرنده از T و T′\u200E همان خط مماس مشترک خارجی مورد نظر است.','lineM sqT',{lineM:1,sqT:1}],
-['d','نکته: امتداد مماس‌های مشترک خارجی دقیقاً روی خط‌المرکزین OO′\u200E یکدیگر را قطع می‌کنند.']]}
+['d','نکته: اگر دو مماس مشترک خارجی را امتداد دهیم، نقطهٔ تقاطع آن‌ها دقیقاً روی خط‌المرکزین OO′\u200E قرار می‌گیرد.']]}
 ,
 
 {k:'fig_int',h:'۳. محاسبهٔ طول مماس مشترک داخلی',items:[
-['obj','🎯 هدف این بخش: محاسبهٔ طول مماس مشترک داخلی که از میان دو دایره عبور می‌کند.'],
-['p','دو دایرهٔ متخارج به فاصلهٔ مرکزهای d = OO′\u200E داریم.','circ1 circ2 pO pOp sOO',{circ1:1,circ2:2}],
+['obj','🎯 هدف این بخش: محاسبهٔ طول مماس مشترک داخلی (TT′\u200E) که از میان دو دایره عبور می‌کند، برحسب فاصلهٔ d و شعاع‌ها.'],
+['p','دو دایرهٔ متخارج به مرکزهای O (آبی) و O′\u200E (بنفش) با فاصلهٔ d = OO′\u200E داریم.','circ1 circ2 pO pOp sOO',{circ1:1,circ2:2}],
 ['p','خط m مماس مشترک داخلی است که در T و T′\u200E بر دایره‌ها مماس است.','lineM pT pTp',{lineM:2,pT:2,pTp:2}],
-['p','شعاع‌های OT و O′T′\u200E را رسم می‌کنیم که بر مماس عمودند.','sOT sOpTp sqT sqTp',{sOT:1,sOpTp:2,sqT:1,sqTp:2}],
-['btn','گام اول: امتداد دادن شعاع'],
-['st','گام ۱: تشکیل ضلع با طول R + R′\u200E'],
-['p','شعاع OT را به اندازهٔ R′\u200E به سمت بیرون امتداد می‌دهیم تا نقطهٔ H حاصل شود. سپس از O′\u200E خطی موازی مماس به H رسم می‌کنیم.','extOT pH lineOpH sqH',{extOT:2,pH:2,lineOpH:1,sqH:1}],
-['btn','گام دوم: رابطهٔ فیثاغورس'],
+['p','شعاع‌های OT و O′T′\u200E را رسم می‌کنیم که بر مماس عمود هستند.','sOT sOpTp sqT sqTp',{sOT:1,sOpTp:2,sqT:1,sqTp:2}],
+['btn','گام اول: رسم خط کمکی و امتداد شعاع'],
+['st','گام ۱: امتداد دادن شعاع OT به اندازهٔ R′\u200E'],
+['p','شعاع OT را به اندازهٔ شعاع دایرهٔ دوم (R′\u200E) به سمت بیرون امتداد می‌دهیم تا به نقطهٔ H برسد.','extOT pH',{extOT:2,pH:2}],
+['p','از مرکز O′\u200E خطی موازی مماس داخلی رسم می‌کنیم تا به H وصل شود.','lineOpH sqH',{lineOpH:1,sqH:1}],
+['btn','گام دوم: مستطیل کمکی و فیثاغورس'],
 ['st','گام ۲: مثلث قائم‌الزاویهٔ O′HO'],
-['p','چهارضلعی TT′O′H مستطیل است؛ بنابراین پاره‌خط OH برابر با مجموع دو شعاع است:','rectH',{rectH:2}],
+['p','چهارضلعی TT′O′H مستطیل است و TH = R′\u200E؛ بنابراین کل پاره‌خط OH برابر مجموع دو شعاع می‌شود:','rectH',{rectH:2}],
 ['f2','OH = OT + TH = R + R′'],
-['p','در مثلث قائم‌الزاویهٔ O′HO، قضیهٔ فیثاغورس را می‌نویسیم:','triH',{triH:1}],
+['p','در مثلث قائم‌الزاویهٔ O′HO با وتر d و ضلع قائمهٔ R + R′\u200E، رابطهٔ فیثاغورس را می‌نویسیم:','triH',{triH:1}],
 ['f2','O′H² + (R + R′)² = d²'],
 ['f2','O′H = √(d² - (R + R′)²)'],
-['d','فرمول طول مماس مشترک داخلی:'],
+['d','قضیه طول مماس مشترک داخلی:'],
 ['f','TT′ = √(d² - (R + R′)²)'],
-['ex','مثال عددی: اگر فاصلهٔ مرکزها d = 10 و شعاع‌ها R = 5 و R′ = 3 باشد:'],
-['f2','TT′ = √(10² - (5 + 3)²) = √(100 - 64) = √36 = 6'],
-['quiz',{q:'چرا طول مماس مشترک داخلی همواره کمتر از مماس خارجی است؟',o:['چون عبارت (R + R′)² بزرگ‌تر از (R - R′)² است','چون دایره‌ها کوچک‌تر می‌شوند','چون زاویهٔ مماس فرق دارد'],a:0,h:'عبارت زیر رادیکال را در هر دو فرمول مقایسه کنید.',e:'چون R + R′ بزرگ‌تر از R - R′ است، در مماس داخلی مقدار بیشتری از d² کم می‌شود.'}]]},
+['ex','مثال عددی: فرض کنید فاصلهٔ مرکزها d = 10 و شعاع‌ها R = 5 و R′ = 3 باشد. برای محاسبهٔ طول مماس داخلی طبق قضیه داریم:'],
+['f2','TT′ = √(10² - (5 + 3)²)'],
+['f2','TT′ = √(100 - 64) = √36 = 6'],
+['quiz',{q:'چرا طول مماس مشترک داخلی همیشه کمتر از طول مماس مشترک خارجی است؟',o:['چون در مماس داخلی، عبارت بزرگ‌تری یعنی (R + R′)² از d² کم می‌شود','چون زاویهٔ مماس داخلی تندتر است','چون دایره‌ها در حالت داخلی کوچک‌ترند'],a:0,h:'عبارت‌های زیر رادیکال را در هر دو فرمول با هم مقایسه کن.',e:'چون R + R′ همواره بزرگ‌تر از R - R′ است، در مماس داخلی مقدار کم‌تری زیر رادیکال می‌ماند و طول آن کوتاه‌تر است.'}]]},
 
-{k:'fig_tan_ext',h:'۴. دو دایرهٔ مماس برون و فرمول طلایی',items:[
-['obj','🎯 هدف این بخش: اثبات فرمول طلایی مماس خارجی در حالتی که دو دایره از بیرون بر هم مماس باشند.'],
-['p','دو دایره از بیرون در نقطهٔ C بر هم مماس هستند. در این حالت فاصلهٔ مرکزها دقیقاً برابر با مجموع دو شعاع است: d = R + R′\u200E.','circ1 circ2 pO pOp pC sOO',{circ1:1,circ2:2,pC:3}],
-['p','مماس مشترک خارجی TT′\u200E را به همراه شعاع‌های عمود رسم می‌کنیم.','lineM pT pTp sOT sOpTp',{lineM:1,pT:1,pTp:1,sOT:1,sOpTp:2}],
-['btn','اثبات فرمول با اتحاد جبری'],
-['st','اثبات با جایگذاری d = R + R′\u200E در رابطهٔ مماس خارجی:'],
+{k:'fig_tan_ext',h:'۴. فرمول طلایی در دو دایرهٔ مماس برون',items:[
+['obj','🎯 هدف این بخش: کشف فرمول بسیار مشهور و کنکوری طول مماس مشترک خارجی در حالتی که دو دایره از بیرون بر هم مماس باشند.'],
+['p','دو دایره داریم که از بیرون در نقطهٔ C بر یکدیگر مماس هستند.','circ1 circ2 pO pOp pC sOO',{circ1:1,circ2:2,pC:3}],
+['p','در این حالت، فاصلهٔ مرکزها دقیقاً برابر مجموع دو شعاع است: d = R + R′\u200E.'],
+['p','مماس مشترک خارجی TT′\u200E را به همراه شعاع‌های عمود بر آن رسم می‌کنیم.','lineM pT pTp sOT sOpTp',{lineM:1,pT:1,pTp:1,sOT:1,sOpTp:2}],
+['btn','اثبات فرمول طلایی با اتحادها'],
+['st','اثبات جبری با جایگذاری در رابطهٔ مماس خارجی:'],
+['p','مقدار d = R + R′\u200E را درون فرمول مماس مشترک خارجی قرار می‌دهیم:'],
 ['f2','TT′ = √((R + R′)² - (R - R′)²)'],
 ['p','اتحادهای جبری را ساده می‌کنیم:'],
 ['f2','(R + R′)² - (R - R′)² = 4RR′'],
+['p','با جذر گرفتن، به رابطهٔ طلایی می‌رسیم:'],
 ['d','فرمول طلایی در دو دایرهٔ مماس برون:'],
 ['f','TT′ = 2√(RR′)'],
-['ex','مثال عددی: اگر شعاع دو دایرهٔ مماس برون R = 9 و R′ = 4 باشد:'],
-['f2','TT′ = 2√(9 × 4) = 2√36 = 12'],
-['quiz',{q:'شعاع دو دایرهٔ مماس برون ۱۶ و ۴ است. طول مماس خارجی چقدر است؟',o:['TT′ = 16','TT′ = 20','TT′ = 8'],a:0,h:'از فرمول 2√(R × R′) استفاده کنید.',e:'2 × √(16 × 4) = 2 × 8 = 16.'}]]},
+['ex','مثال عددی: اگر شعاع دو دایرهٔ مماس برون R = 9 و R′ = 4 باشد، طول مماس خارجی به این صورت محاسبه می‌شود:'],
+['f2','TT′ = 2√(9 × 4)'],
+['f2','TT′ = 2√36 = 2 × 6 = 12'],
+['quiz',{q:'شعاع دو دایرهٔ مماس برون ۱۶ و ۴ است. طول مماس مشترک خارجی آن‌ها چقدر است؟',o:['TT′ = 16','TT′ = 20','TT′ = 8'],a:0,h:'از رابطهٔ TT′ = 2√(R × R′) استفاده کن.',e:'2 × √64 = 2 × 8 = 16.'}]]},
 
-{k:'fig_tan_int',h:'۵. دو دایرهٔ مماس درون (تماس داخلی)',items:[
-['obj','🎯 بررسی وضعیت مماس درون: دایرهٔ کوچک‌تر کاملاً درون دایرهٔ بزرگ‌تر است و در نقطهٔ C بر آن مماس است.'],
-['p','دو دایره داریم که دایرهٔ بنفش داخل دایرهٔ آبی قرار داشته و در نقطهٔ C بر هم مماس هستند.','circ1 circ2 pO pOp pC sOO',{circ1:1,circ2:2,pC:3}],
-['p','در این حالت، مرکزهای O و O′\u200E و نقطهٔ تماس C همگی روی یک خط راست (خط‌المرکزین) قرار دارند.','lineCenter',{lineCenter:1}],
-['btn','محاسبهٔ فاصلهٔ مرکزها'],
-['st','فاصلهٔ دو مرکز در حالت مماس درون:'],
-['p','چون OC = R و O′C = R′\u200E است، فاصلهٔ مرکزها برابر با تفاضل دو شعاع می‌شود:'],
-['f2','d = OO′ = OC - O′C = R - R′'],
-['btn','بررسی خط مماس مشترک'],
-['st','وضعیت خط مماس مشترک:'],
-['p','در این حالت، دو دایره تنها یک مماس مشترک دارند که در نقطهٔ C بر خط‌المرکزین عمود است.','lineM sqC',{lineM:1,sqC:3}],
-['d','قضیه: در دو دایرهٔ مماس درون، خط‌المرکزین بر مماس مشترک در نقطهٔ تماس عمود است و d = R - R′\u200E است.'],
-['st','بررسی فرمول طول مماس خارجی در این حالت:'],
-['p','اگر مقدار d = R - R′\u200E را درون فرمول مماس خارجی بگذاریم:'],
-['f2','TT′ = √((R - R′)² - (R - R′)²) = 0'],
-['p','طول مماس صفر می‌شود؛ یعنی نقاط تماس T و T′\u200E بر هم منطبق شده و به یک نقطهٔ تماس واحد (نقطهٔ C) تبدیل می‌شوند.'],
-['quiz',{q:'شعاع دو دایرهٔ مماس درون ۱۰ و ۳ است. فاصلهٔ مرکزهای آن‌ها چقدر است؟',o:['d = 7','d = 13','d = √91'],a:0,h:'در مماس درون فاصله مرکزها تفاضل شعاع‌هاست: 10 - 3.',e:'d = R - R′ = 10 - 3 = 7.'}]]},
+{k:'fig_sec',h:'۵. دو دایرهٔ متقاطع و وتر مشترک',items:[
+['obj','🎯 هدف این بخش: اثبات این‌که خط‌المرکزین (OO′\u200E) عمودمنصف وتر مشترک (AB) دو دایرهٔ متقاطع است.'],
+['p','دو دایره را در نظر می‌گیریم که در دو نقطهٔ A و B یکدیگر را قطع کرده‌اند.','circ1 circ2 pO pOp pA pB',{circ1:1,circ2:2,pA:3,pB:3}],
+['p','پاره‌خط AB را که وتر مشترک هر دو دایره است رسم می‌کنیم.','chordAB',{chordAB:2}],
+['p','خط‌المرکزین OO′\u200E را که مرکز دو دایره را به هم متصل می‌کند رسم می‌کنیم.','lineOO',{lineOO:1}],
+['btn','مراحل اثبات عمودمنصف بودن'],
+['st','اثبات هندسی بر اساس تساوی فاصله‌ها:'],
+['p','شعاع‌های OA و OB را وصل می‌کنیم. چون OA = OB = R است، نقطهٔ O روی عمودمنصف AB است.','sOA sOB',{sOA:1,sOB:1}],
+['p','شعاع‌های O′A و O′B را وصل می‌کنیم. چون O′A = O′B = R′\u200E است، نقطهٔ O′\u200E نیز روی عمودمنصف AB است.','sOpA sOpB',{sOpA:2,sOpB:2}],
+['p','خطی که از دو نقطهٔ O و O′\u200E می‌گذرد عمودمنصف وتر AB است؛ پس بر آن عمود است و آن را در M نصف می‌کند.','pM sqM',{pM:1,sqM:3}],
+['d','قضیه وتر مشترک: در دو دایرهٔ متقاطع، خط‌المرکزین عمودمنصف وتر مشترک است.'],
+['f','OO′ ⟂ AB  ,  AM = BM'],
+['quiz',{q:'اگر طول کل وتر مشترک AB برابر ۱۶ باشد، فاصلهٔ نقطهٔ تقاطع M تا نقطهٔ A چقدر است؟',o:['AM = 8','AM = 16','AM = 4'],a:0,h:'خط‌المرکزین وتر را دقیقاً به دو نیم تقسیم می‌کند.',e:'16 ÷ 2 = 8.'}]]},
 
-{k:'fig_sec',h:'۶. دو دایرهٔ متقاطع و وتر مشترک',items:[
-['obj','🎯 هدف این بخش: اثبات این‌که خط‌المرکزین (OO′\u200E) عمودمنصف وتر مشترک (AB) است.'],
-['p','دو دایره در دو نقطهٔ A و B یکدیگر را قطع کرده‌اند. وتر مشترک AB را رسم می‌کنیم.','circ1 circ2 pO pOp pA pB chordAB',{circ1:1,circ2:2,pA:3,pB:3,chordAB:2}],
-['p','خط‌المرکزین OO′\u200E را که مرکز دو دایره را متصل می‌کند رسم می‌کنیم.','lineOO',{lineOO:1}],
-['btn','اثبات عمودمنصف بودن'],
-['st','اثبات هندسی بر اساس برابری فاصله‌ها:'],
-['p','چون OA = OB = R است، نقطهٔ O روی عمودمنصف AB است. همچنین چون O′A = O′B = R′\u200E است، O′\u200E نیز روی عمودمنصف AB است.','sOA sOB sOpA sOpB',{sOA:1,sOB:1,sOpA:2,sOpB:2}],
-['p','بنابراین خط‌المرکزین عمودمنصف وتر مشترک است: بر آن عمود است و آن را در M نصف می‌کند.','pM sqM',{pM:1,sqM:3}],
-['d','قضیه وتر مشترک: OO′ ⟂ AB  و  AM = BM'],
-['quiz',{q:'اگر طول کل وتر مشترک AB برابر ۱۶ باشد، طول پاره‌خط AM چقدر است؟',o:['AM = 8','AM = 16','AM = 4'],a:0,h:'خط‌المرکزین وتر را نصف می‌کند.',e:'16 ÷ 2 = 8.'}]]},
+{h:'۶. جدول‌های جمع‌بندی جامع',items:[
+['obj','🎯 جدول‌های مرجع: اوضاع نسبی دو دایره، تعداد مماس‌های مشترک و فرمول‌های محاسباتی.'],
 
-{h:'۷. جدول جمع‌بندی فرمول‌های صفحات ۲۱ و ۲۲',items:[
-['obj','🎯 مرجع کامل فرمول‌های طولی: تمامی روابط محاسبهٔ طول مماس‌ها و وتر مشترک در یک نگاه.'],
+['st','جدول ۱: اوضاع نسبی دو دایره و مماس‌های مشترک'],
+['tbl',`
+<div class="tbl-hint">↔️ جدول قابل اسکرول به طرفین است</div>
+<table class="tbl">
+ <thead>
+  <tr>
+   <th>وضعیت دو دایره</th>
+   <th>فاصلهٔ مرکزها (d)</th>
+   <th>تعداد مماس</th>
+   <th>نوع مماس‌های مشترک</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><b>دو دایره متخارج (برون‌هم)</b></td>
+   <td><span dir="ltr" style="font-weight:700">d &gt; R + R′</span></td>
+   <td><b>۴ مماس</b></td>
+   <td><span class="badge badge-ext">۲ خارجی</span> و <span class="badge badge-int">۲ داخلی</span></td>
+  </tr>
+  <tr>
+   <td><b>دو دایره مماس برون</b></td>
+   <td><span dir="ltr" style="font-weight:700">d = R + R′</span></td>
+   <td><b>۳ مماس</b></td>
+   <td><span class="badge badge-ext">۲ خارجی</span> و <span class="badge badge-int">۱ داخلی</span></td>
+  </tr>
+  <tr>
+   <td><b>دو دایره متقاطع</b></td>
+   <td><span dir="ltr" style="font-weight:700">R - R′ &lt; d &lt; R + R′</span></td>
+   <td><b>۲ مماس</b></td>
+   <td><span class="badge badge-ext">فقط ۲ خارجی</span></td>
+  </tr>
+  <tr>
+   <td><b>دو دایره مماس درون</b></td>
+   <td><span dir="ltr" style="font-weight:700">d = R - R′</span></td>
+   <td><b>۱ مماس</b></td>
+   <td><span class="badge badge-ext">فقط ۱ خارجی</span></td>
+  </tr>
+  <tr>
+   <td><b>دو دایره متداخل</b></td>
+   <td><span dir="ltr" style="font-weight:700">d &lt; R - R′ (d &gt; 0)</span></td>
+   <td><b>۰ مماس</b></td>
+   <td>فاقد مماس مشترک</td>
+  </tr>
+  <tr>
+   <td><b>دایره‌های هم‌مرکز</b></td>
+   <td><span dir="ltr" style="font-weight:700">d = 0</span></td>
+   <td><b>۰ مماس</b></td>
+   <td>فاقد مماس مشترک</td>
+  </tr>
+ </tbody>
+</table>
+`],
+
+['st','جدول ۲: فرمول‌های محاسبهٔ طول مماس‌ها و وتر مشترک'],
 ['tbl',`
 <div class="tbl-hint">↔️ جدول قابل اسکرول به طرفین است</div>
 <table class="tbl">
@@ -277,28 +358,23 @@ const S=[
  <tbody>
   <tr>
    <td><b>طول مماس مشترک خارجی</b></td>
-   <td><span class="math-tag">TT′ = <span class="rad"><span class="r-sym">√</span><span class="r-body">d² - (R - R′)²</span></span></span></td>
+   <td><span class="math-tag">TT′ = <span class="rad"><span class="r-sym">√</span><span class="r-body">(d² - (R - R′)²)</span></span></span></td>
    <td>وجود دارد اگر <span dir="ltr" style="font-weight:700">d ≥ R - R′</span></td>
   </tr>
   <tr>
    <td><b>طول مماس مشترک داخلی</b></td>
-   <td><span class="math-tag">TT′ = <span class="rad"><span class="r-sym">√</span><span class="r-body">d² - (R + R′)²</span></span></span></td>
+   <td><span class="math-tag">TT′ = <span class="rad"><span class="r-sym">√</span><span class="r-body">(d² - (R + R′)²)</span></span></span></td>
    <td>وجود دارد اگر <span dir="ltr" style="font-weight:700">d ≥ R + R′</span> (دو دایره متخارج)</td>
   </tr>
   <tr>
    <td><b>مماس مشترک در مماس برون</b></td>
-   <td><span class="math-tag">TT′ = 2<span class="rad"><span class="r-sym">√</span><span class="r-body">R · R′</span></span></span></td>
+   <td><span class="math-tag">TT′ = 2<span class="rad"><span class="r-sym">√</span><span class="r-body">(R · R′)</span></span></span></td>
    <td>حالت ویژه که در آن <span dir="ltr" style="font-weight:700">d = R + R′</span> است</td>
-  </tr>
-  <tr>
-   <td><b>وضعیت مماس درون</b></td>
-   <td><span class="math-tag">d = R - R′</span></td>
-   <td>تنها ۱ مماس در نقطهٔ تماس دارد (<span dir="ltr" style="font-weight:700">TT′ = 0</span>)</td>
   </tr>
   <tr>
    <td><b>وتر مشترک دو دایرهٔ متقاطع (AB)</b></td>
    <td><span class="math-tag">OO′ ⟂ AB</span></td>
-   <td>خط‌المرکزین عمودمنصف وتر مشترک است (<span dir="ltr" style="font-weight:700">AM = BM</span>)</td>
+   <td>خط‌المرکزین همواره عمودمنصف وتر مشترک است</td>
   </tr>
  </tbody>
 </table>
@@ -306,29 +382,37 @@ const S=[
 ['d','نکته: در تمام روابط، فرض بر این است که R شعاع دایرهٔ بزرگ‌تر و R′\u200E شعاع دایرهٔ کوچک‌تر است (R > R′\u200E).']]}
 ,
 
-{h:'۸. آزمون نهایی و سنجش آموخته‌ها',items:[
+{h:'۷. آزمون و تمرین‌های تعاملی',items:[
+['obj','🎯 ارزیابی: میزان یادگیری خود از روابط و قضایای این فصل را محک بزنید.'],
 ['quiz',{
- q:'اگر فاصلهٔ مرکزها d = 15 و شعاع‌ها R = 11 و R′ = 2 باشد، طول مماس خارجی چقدر است؟',
+ q:'اگر فاصلهٔ مرکزهای دو دایره d = 15 و شعاع‌های آن‌ها R = 11 و R′ = 2 باشد، طول مماس مشترک خارجی چقدر است؟',
  o:['TT′ = 12','TT′ = 10','TT′ = 14'],
  a:0,
- h:'تفاضل شعاع‌ها 11 - 2 = 9 است. سپس √(15² - 9²).',
+ h:'ابتدا تفاضل شعاع‌ها را بیاب: 11 - 2 = 9. سپس فیثاغورس: √(15² - 9²).',
  e:'√(225 - 81) = √144 = 12.'
 }],
 ['quiz',{
- q:'دو دایره به شعاع‌های 18 و 2 مماس برون هستند. طول مماس خارجی آن‌ها چقدر است؟',
+ q:'دو دایره به شعاع‌های 18 و 2 مماس برون هستند. طول مماس مشترک خارجی آن‌ها چقدر است؟',
  o:['TT′ = 12','TT′ = 20','TT′ = 6'],
  a:0,
- h:'از فرمول طلایی TT′ = 2√(R × R′) استفاده کن: 2√(18 × 2).',
+ h:'از رابطهٔ طلایی TT′ = 2√(R × R′) استفاده کن: 2√(18 × 2).',
  e:'2 × √36 = 2 × 6 = 12.'
 }],
 ['quiz',{
- q:'اگر دو دایره به شعاع‌های ۹ و ۴ مماس درون باشند، فاصلهٔ مرکزهای آن‌ها چقدر است؟',
- o:['d = 5','d = 13','d = √65'],
+ q:'دو دایره به شعاع‌های R = 6 و R′ = 2 و فاصلهٔ مرکزها d = 10 مفروض‌اند. طول مماس مشترک داخلی آن‌ها چقدر است؟',
+ o:['TT′ = 6','TT′ = 8','TT′ = 2√21'],
  a:0,
- h:'در مماس درون d برابر با تفاضل شعاع‌ها است: 9 - 4.',
- e:'d = R - R′ = 9 - 4 = 5.'
+ h:'مجموع شعاع‌ها برابر 6 + 2 = 8 است. سپس فیثاغورس: √(10² - 8²).',
+ e:'√(100 - 64) = √36 = 6.'
 }],
-['p','آفرین! شما تمامی مفاهیم و محاسبات هندسی صفحات ۲۱ و ۲۲ را با موفقیت یاد گرفتید. 🎉']
+['quiz',{
+ q:'اگر طول وتر مشترک دو دایرهٔ متقاطع برابر 12 باشد، خط‌المرکزین این وتر را به دو پاره‌خط با چه طول‌هایی تقسیم می‌کند؟',
+ o:['دو پاره‌خط به طول 6','یک پاره‌خط 4 و دیگری 8','اطلاعات برای پاسخ کافی نیست'],
+ a:0,
+ h:'به خاصیت عمودمنصف بودن خط‌المرکزین فکر کن که وتر را نصف می‌کند.',
+ e:'چون خط‌المرکزین عمودمنصف وتر مشترک است، آن را دقیقاً به دو پاره‌خط 6 واحدی تقسیم می‌کند.'
+}],
+['p','آفرین! شما تمامی مباحث و روابط صفحات ۲۱ و ۲۲ را به طور کامل یاد گرفتید. 🎉']
 ]}
 ];
 
@@ -359,15 +443,49 @@ async function stage(i){
  if(tok!==run)return;
  const n=el('button','go');n.textContent=i<S.length-1?'گام بعدی ◀':'شروع دوباره';n.onclick=()=>stage((i+1)%S.length);box.append(n);scroll(n);
 }
-function gate(box,label){return new Promise(r=>{const b=el('button','go');b.textContent=label;b.onclick=()=>{b.remove();r()};box.append(b);scroll(b)})}
-function quiz(box,v){return new Promise(res=>{
- const q=el('div','quiz'),t=el('b'),row=el('div','opts'),fb=el('div','fb');t.textContent=v.q;
- v.o.forEach((s,i)=>{const b=el('button','opt');b.textContent=s;b.onclick=()=>{
-  if(i===v.a){b.classList.add('ok');fb.textContent='آفرین! '+v.e;row.querySelectorAll('button').forEach(x=>x.disabled=true);setTimeout(res,1500);}
-  else{b.classList.add('no');fb.textContent='دوباره فکر کن. راهنما: '+v.h;}};row.append(b)});
- q.append(t,row,fb);box.append(q);scroll(q);})}
+function gate(box,label){return new Promise(r=>{const b=el('button','go');b.textContent=label;b.onclick=()=>{b.remove();r()};box.append(b)})}
 
-function rightAngle(V,P1,P2,size=11){
+// تابع اصلاح‌شده آزمون
+function quiz(box,v){return new Promise(res=>{
+ const q=el('div','quiz'),t=el('b'),row=el('div','opts'),fb=el('div','fb');
+ 
+ t.innerHTML = formatMath(v.q); 
+ t.style.textAlign = 'right';
+ 
+ v.o.forEach((s,i)=>{
+   const b=el('button','opt');
+   b.dir='rtl';
+   b.style.textAlign = 'right';
+   b.innerHTML=formatMath(s);
+   b.onclick=()=>{
+    if(i===v.a){
+      b.classList.add('ok');
+      let answerHTML = formatMath(v.e);
+      
+      // اگر پاسخ شامل متن فارسی بود، به صورت راست‌چین نمایش داده می‌شود
+      if (/[\u0600-\u06FF]/.test(v.e)) {
+         fb.innerHTML = 'آفرین! ' + answerHTML;
+      } else {
+         fb.innerHTML = 'آفرین! <br><span dir="ltr" style="display:inline-block; font-weight:bold; color:var(--ok); margin-top:4px;">' + answerHTML + '</span>';
+      }
+      fb.setAttribute('dir', 'rtl');
+      fb.style.textAlign = 'right';
+      
+      row.querySelectorAll('button').forEach(x=>x.disabled=true);setTimeout(res,1500);
+    } else {
+      b.classList.add('no');
+      fb.innerHTML='دوباره فکر کن. راهنما: ' + formatMath(v.h);
+      fb.setAttribute('dir', 'rtl');
+      fb.style.textAlign = 'right';
+    }
+   };
+   row.append(b)
+ });
+ 
+ q.append(t,row,fb);box.append(q);scroll(q)})}
+
+/* هندسه پویا با پالت رنگی آبی و بنفش */
+function rightAngle(V,P1,P2,size=10){
  const v1={x:(P1.x-V.x)/Math.hypot(P1.x-V.x,P1.y-V.y),y:(P1.y-V.y)/Math.hypot(P1.x-V.x,P1.y-V.y)};
  const v2={x:(P2.x-V.x)/Math.hypot(P2.x-V.x,P2.y-V.y),y:(P2.y-V.y)/Math.hypot(P2.x-V.x,P2.y-V.y)};
  const a={x:V.x+v1.x*size,y:V.y+v1.y*size};
@@ -377,77 +495,35 @@ function rightAngle(V,P1,P2,size=11){
 }
 
 function mkFig(kind){
- const w=el('div','demo'),svg=document.createElementNS(NS,'svg'),ctl=el('div','ctl-panel');
- svg.setAttribute('viewBox','0 0 520 280');
- w.append(svg,ctl);
- 
+ const w=el('div','demo'),svg=document.createElementNS(NS,'svg');
+ svg.setAttribute('viewBox','0 0 480 300');w.append(svg);
  const vis=new Set(),fresh=new Set();let hl={};
- 
- let state={
-  R: kind==='fig_sec'?84:(kind==='fig_tan_int'?92:82),
-  R2: kind==='fig_sec'?64:(kind==='fig_tan_int'?46:44),
-  d: kind==='fig_ext'?240:(kind==='fig_int'?255:(kind==='fig_sec'?130:126))
- };
-
- function buildControls(){
-  ctl.innerHTML='';
-  let rows='';
-  if(kind==='fig_ext'||kind==='fig_int'){
-   rows=`
-    <div class="ctl-row"><label>فاصله مرکزها (d):</label><input type="range" id="sl-d" min="${kind==='fig_ext'?140:150}" max="280" value="${state.d}"><span class="ctl-val" id="vl-d">${state.d}</span></div>
-    <div class="stat-strip" id="calc-strip"></div>
-   `;
-  } else if(kind==='fig_tan_int'){
-   rows=`
-    <div class="ctl-row"><label>شعاع کوچک (R′):</label><input type="range" id="sl-R2" min="30" max="65" value="${state.R2}"><span class="ctl-val" id="vl-R2">${state.R2}</span></div>
-    <div class="stat-strip" id="calc-strip"></div>
-   `;
-  } else if(kind==='fig_sec'){
-   rows=`
-    <div class="ctl-row"><label>فاصله مرکزها (d):</label><input type="range" id="sl-d" min="70" max="145" value="${state.d}"><span class="ctl-val" id="vl-d">${state.d}</span></div>
-    <div class="stat-strip" id="calc-strip"></div>
-   `;
-  } else {
-   rows=`<div class="stat-strip" id="calc-strip"></div>`;
-  }
-  ctl.innerHTML=rows;
-
-  const bind=(id,prop)=>{
-   const sl=ctl.querySelector('#'+id);
-   if(sl)sl.oninput=e=>{
-    state[prop]=parseFloat(e.target.value);
-    const vl=ctl.querySelector('#vl-'+prop);
-    if(vl)vl.textContent=state[prop];
-    draw();
-   };
-  };
-  bind('sl-d','d');bind('sl-R2','R2');
- }
 
  function draw(){
   const c=(k,base,isFill)=>base+(hl[k]?' h'+hl[k]:'')+(fresh.has(k)?(isFill?' nf':' nw'):'');
   const V=k=>vis.has(k);
   let s='';
-  const calcBox=ctl.querySelector('#calc-strip');
 
   if(kind==='fig_ext'||kind==='fig_aux'){
-   const cy=145, O={x:135,y:cy}, R=state.R, R2=state.R2, d=state.d, O2={x:O.x+d,y:cy};
-   const diffR=R-R2, valid=d>diffR;
-   const sinG=valid?diffR/d:0, cosG=Math.sqrt(Math.max(0,1-sinG*sinG));
-   const T={x:O.x+R*sinG, y:O.y-R*cosG}, T2={x:O2.x+R2*sinG, y:O2.y-R2*cosG};
-   const H={x:O.x+diffR*sinG, y:O.y-diffR*cosG};
-   const ttLen=valid?Math.sqrt(d*d-diffR*diffR):0;
+   const O={x:130,y:175}, O2={x:340,y:175}, R=68, R2=36, d=210;
+   const sinG=(R-R2)/d, cosG=Math.sqrt(1-sinG*sinG);
+   const T={x:O.x+R*sinG, y:O.y-R*cosG};
+   const T2={x:O2.x+R2*sinG, y:O2.y-R2*cosG};
+   const H={x:O.x+(R-R2)*sinG, y:O.y-(R-R2)*cosG};
 
    if(V('triH'))s+=`<polygon class="${c('triH','tf h2',1)}" points="${O.x},${O.y} ${O2.x},${O2.y} ${H.x},${H.y}"/>`;
    if(V('rectH'))s+=`<polygon class="${c('rectH','tf h1',1)}" points="${H.x},${H.y} ${O2.x},${O2.y} ${T2.x},${T2.y} ${T.x},${T.y}"/>`;
+
    if(V('sOO'))s+=`<line pathLength="1" class="${c('sOO','ln')}" stroke-dasharray="4 4" x1="${O.x}" y1="${O.y}" x2="${O2.x}" y2="${O2.y}"/>`;
    if(V('circ1'))s+=`<circle pathLength="1" class="${c('circ1','cir-blue')}" cx="${O.x}" cy="${O.y}" r="${R}"/>`;
    if(V('circ2'))s+=`<circle pathLength="1" class="${c('circ2','cir-pur')}" cx="${O2.x}" cy="${O2.y}" r="${R2}"/>`;
-   if(V('circAux'))s+=`<circle class="${c('circAux','aux',1)}" cx="${O.x}" cy="${O.y}" r="${diffR}"/>`;
+
+   if(V('circAux'))s+=`<circle class="${c('circAux','aux',1)}" cx="${O.x}" cy="${O.y}" r="${R-R2}"/>`;
+
    if(V('sOT'))s+=`<line pathLength="1" class="${c('sOT','ln-blue')}" x1="${O.x}" y1="${O.y}" x2="${T.x}" y2="${T.y}"/>`;
    if(V('sOpTp'))s+=`<line pathLength="1" class="${c('sOpTp','ln-pur')}" x1="${O2.x}" y1="${O2.y}" x2="${T2.x}" y2="${T2.y}"/>`;
    if(V('lineOpH'))s+=`<line pathLength="1" class="${c('lineOpH','ln-help')}" x1="${O2.x}" y1="${O2.y}" x2="${H.x}" y2="${H.y}"/>`;
-   if(V('lineM'))s+=`<line pathLength="1" class="${c('lineM','ln-tan')}" x1="${T.x-40*cosG}" y1="${T.y-40*sinG}" x2="${T2.x+40*cosG}" y2="${T2.y+40*sinG}"/>`;
+   if(V('lineM'))s+=`<line pathLength="1" class="${c('lineM','ln-tan')}" x1="${T.x-45*cosG}" y1="${T.y-45*sinG}" x2="${T2.x+45*cosG}" y2="${T2.y+45*sinG}"/>`;
 
    if(V('sqT'))s+=`<path class="${c('sqT','sq',1)}" d="${rightAngle(T,O,T2)}"/>`;
    if(V('sqTp'))s+=`<path class="${c('sqTp','sq',1)}" d="${rightAngle(T2,O2,T)}"/>`;
@@ -458,29 +534,26 @@ function mkFig(kind){
    if(V('pT'))s+=`<circle class="pt-tan nf" cx="${T.x}" cy="${T.y}" r="4.5"/><text class="lb nf" x="${T.x-8}" y="${T.y-10}">T</text>`;
    if(V('pTp'))s+=`<circle class="pt-tan nf" cx="${T2.x}" cy="${T2.y}" r="4.5"/><text class="lb nf" x="${T2.x+6}" y="${T2.y-10}">T′</text>`;
    if(V('pH'))s+=`<circle class="pt nf" cx="${H.x}" cy="${H.y}" r="4"/><text class="lb nf" x="${H.x-18}" y="${H.y+8}">H</text>`;
-
-   if(calcBox){
-    calcBox.innerHTML=`<span>فاصله: <b>d = ${(d/16).toFixed(1)}</b></span> <span>طول مماس: <b>TT′ = ${(ttLen/16).toFixed(1)}</b></span>`;
-   }
   }
   else if(kind==='fig_int'){
-   const cy=140, O={x:125,y:cy}, R=state.R, R2=state.R2, d=state.d, O2={x:O.x+d,y:cy};
-   const sumR=R+R2, valid=d>sumR;
-   const sinB=valid?sumR/d:0, cosB=Math.sqrt(Math.max(0,1-sinB*sinB));
-   const T={x:O.x+R*sinB, y:O.y-R*cosB}, T2={x:O2.x-R2*sinB, y:O2.y+R2*cosB};
-   const H={x:O.x+sumR*sinB, y:O.y-sumR*cosB};
-   const ttLen=valid?Math.sqrt(d*d-sumR*sumR):0;
+   const O={x:120,y:170}, O2={x:350,y:170}, R=56, R2=36, d=230;
+   const sinB=(R+R2)/d, cosB=Math.sqrt(1-sinB*sinB);
+   const T={x:O.x+R*sinB, y:O.y-R*cosB};
+   const T2={x:O2.x-R2*sinB, y:O2.y+R2*cosB};
+   const H={x:O.x+(R+R2)*sinB, y:O.y-(R+R2)*cosB};
 
    if(V('triH'))s+=`<polygon class="${c('triH','tf h1',1)}" points="${O.x},${O.y} ${O2.x},${O2.y} ${H.x},${H.y}"/>`;
    if(V('rectH'))s+=`<polygon class="${c('rectH','tf h2',1)}" points="${H.x},${H.y} ${O2.x},${O2.y} ${T2.x},${T2.y} ${T.x},${T.y}"/>`;
+
    if(V('sOO'))s+=`<line pathLength="1" class="${c('sOO','ln')}" stroke-dasharray="4 4" x1="${O.x}" y1="${O.y}" x2="${O2.x}" y2="${O2.y}"/>`;
    if(V('circ1'))s+=`<circle pathLength="1" class="${c('circ1','cir-blue')}" cx="${O.x}" cy="${O.y}" r="${R}"/>`;
    if(V('circ2'))s+=`<circle pathLength="1" class="${c('circ2','cir-pur')}" cx="${O2.x}" cy="${O2.y}" r="${R2}"/>`;
+
    if(V('sOT'))s+=`<line pathLength="1" class="${c('sOT','ln-blue')}" x1="${O.x}" y1="${O.y}" x2="${T.x}" y2="${T.y}"/>`;
    if(V('extOT'))s+=`<line pathLength="1" class="${c('extOT','ln-help')}" x1="${T.x}" y1="${T.y}" x2="${H.x}" y2="${H.y}"/>`;
    if(V('sOpTp'))s+=`<line pathLength="1" class="${c('sOpTp','ln-pur')}" x1="${O2.x}" y1="${O2.y}" x2="${T2.x}" y2="${T2.y}"/>`;
    if(V('lineOpH'))s+=`<line pathLength="1" class="${c('lineOpH','ln-help')}" x1="${O2.x}" y1="${O2.y}" x2="${H.x}" y2="${H.y}"/>`;
-   if(V('lineM'))s+=`<line pathLength="1" class="${c('lineM','ln-tan')}" x1="${T.x-40*cosB}" y1="${T.y-40*sinB}" x2="${T2.x+40*cosB}" y2="${T2.y+40*sinB}"/>`;
+   if(V('lineM'))s+=`<line pathLength="1" class="${c('lineM','ln-tan')}" style="stroke:var(--teal)" x1="${T.x-45*cosB}" y1="${T.y-45*sinB}" x2="${T2.x+45*cosB}" y2="${T2.y+45*sinB}"/>`;
 
    if(V('sqT'))s+=`<path class="${c('sqT','sq',1)}" d="${rightAngle(T,O,T2)}"/>`;
    if(V('sqTp'))s+=`<path class="${c('sqTp','sq',1)}" d="${rightAngle(T2,O2,T)}"/>`;
@@ -489,23 +562,19 @@ function mkFig(kind){
    if(V('pO'))s+=`<circle class="pt-blue nf" cx="${O.x}" cy="${O.y}" r="5"/><text class="lb nf" x="${O.x-8}" y="${O.y+22}">O</text>`;
    if(V('pOp'))s+=`<circle class="pt-pur nf" cx="${O2.x}" cy="${O2.y}" r="5"/><text class="lb nf" x="${O2.x+6}" y="${O2.y+22}">O′</text>`;
    if(V('pT'))s+=`<circle class="pt-tan nf" cx="${T.x}" cy="${T.y}" r="4.5"/><text class="lb nf" x="${T.x-14}" y="${T.y-10}">T</text>`;
-   if(V('pTp'))s+=`<circle class="pt-tan nf" cx="${T2.x}" cy="${T2.y}" r="4.5"/><text class="lb nf" x="${T2.x+10}" y="${T2.y+12}">T′</text>`;
+   if(V('pTp'))s+=`<circle class="pt-tan nf" cx="${T2.x}" cy="${T2.y}" r="4.5"/><text class="lb nf" x="${T2.x+10}" y="${T2.y+10}">T′</text>`;
    if(V('pH'))s+=`<circle class="pt nf" cx="${H.x}" cy="${H.y}" r="4"/><text class="lb nf" x="${H.x+8}" y="${H.y-6}">H</text>`;
-
-   if(calcBox){
-    calcBox.innerHTML=`<span>فاصله: <b>d = ${(d/16).toFixed(1)}</b></span> <span>مماس داخلی: <b>TT′ = ${(ttLen/16).toFixed(1)}</b></span>`;
-   }
   }
   else if(kind==='fig_tan_ext'){
-   const cy=140, R=state.R, R2=state.R2, d=R+R2;
-   const O={x:185,y:cy}, O2={x:O.x+d,y:cy};
+   const O={x:150,y:175}, R=68, R2=36, d=R+R2, O2={x:O.x+d,y:175};
    const sinG=(R-R2)/d, cosG=Math.sqrt(1-sinG*sinG);
-   const T={x:O.x+R*sinG, y:O.y-R*cosG}, T2={x:O2.x+R2*sinG, y:O2.y-R2*cosG};
-   const ttLen=2*Math.sqrt(R*R2);
+   const T={x:O.x+R*sinG, y:O.y-R*cosG};
+   const T2={x:O2.x+R2*sinG, y:O2.y-R2*cosG};
 
    if(V('sOO'))s+=`<line pathLength="1" class="${c('sOO','ln')}" stroke-dasharray="4 4" x1="${O.x}" y1="${O.y}" x2="${O2.x}" y2="${O2.y}"/>`;
    if(V('circ1'))s+=`<circle pathLength="1" class="${c('circ1','cir-blue')}" cx="${O.x}" cy="${O.y}" r="${R}"/>`;
    if(V('circ2'))s+=`<circle pathLength="1" class="${c('circ2','cir-pur')}" cx="${O2.x}" cy="${O2.y}" r="${R2}"/>`;
+
    if(V('sOT'))s+=`<line pathLength="1" class="${c('sOT','ln-blue')}" x1="${O.x}" y1="${O.y}" x2="${T.x}" y2="${T.y}"/>`;
    if(V('sOpTp'))s+=`<line pathLength="1" class="${c('sOpTp','ln-pur')}" x1="${O2.x}" y1="${O2.y}" x2="${T2.x}" y2="${T2.y}"/>`;
    if(V('lineM'))s+=`<line pathLength="1" class="${c('lineM','ln-tan')}" x1="${T.x-40*cosG}" y1="${T.y-40*sinG}" x2="${T2.x+40*cosG}" y2="${T2.y+40*sinG}"/>`;
@@ -515,40 +584,19 @@ function mkFig(kind){
    if(V('pOp'))s+=`<circle class="pt-pur nf" cx="${O2.x}" cy="${O2.y}" r="5"/><text class="lb nf" x="${O2.x+6}" y="${O2.y+22}">O′</text>`;
    if(V('pT'))s+=`<circle class="pt-tan nf" cx="${T.x}" cy="${T.y}" r="4.5"/><text class="lb nf" x="${T.x-8}" y="${T.y-10}">T</text>`;
    if(V('pTp'))s+=`<circle class="pt-tan nf" cx="${T2.x}" cy="${T2.y}" r="4.5"/><text class="lb nf" x="${T2.x+6}" y="${T2.y-10}">T′</text>`;
-
-   if(calcBox){
-    calcBox.innerHTML=`<span>d = R + R′ = <b>${(d/16).toFixed(1)}</b></span> <span>مماس طلایی: <b>TT′ = ${(ttLen/16).toFixed(1)}</b></span>`;
-   }
-  }
-  else if(kind==='fig_tan_int'){
-   const cy=140, R=state.R, R2=state.R2, d=R-R2;
-   const O={x:210,y:cy}, C={x:O.x+R, y:cy}, O2={x:C.x-R2, y:cy};
-
-   if(V('lineCenter'))s+=`<line pathLength="1" class="${c('lineCenter','ln')}" stroke-dasharray="4 4" x1="${O.x-R-15}" y1="${cy}" x2="${C.x+25}" y2="${cy}"/>`;
-   if(V('circ1'))s+=`<circle pathLength="1" class="${c('circ1','cir-blue')}" cx="${O.x}" cy="${O.y}" r="${R}"/>`;
-   if(V('circ2'))s+=`<circle pathLength="1" class="${c('circ2','cir-pur')}" cx="${O2.x}" cy="${O2.y}" r="${R2}"/>`;
-   if(V('lineM'))s+=`<line pathLength="1" class="${c('lineM','ln-tan')}" x1="${C.x}" y1="${cy-120}" x2="${C.x}" y2="${cy+120}"/>`;
-   if(V('sqC'))s+=`<path class="${c('sqC','sq',1)}" d="${rightAngle(C,O,{x:C.x,y:cy-45})}"/>`;
-   if(V('sOO'))s+=`<line class="ln-help" stroke-width="2.5" x1="${O.x}" y1="${cy}" x2="${O2.x}" y2="${cy}"/>`;
-
-   if(V('pO'))s+=`<circle class="pt-blue nf" cx="${O.x}" cy="${O.y}" r="5"/><text class="lb nf" x="${O.x-8}" y="${O.y+22}">O</text>`;
-   if(V('pOp'))s+=`<circle class="pt-pur nf" cx="${O2.x}" cy="${O2.y}" r="5"/><text class="lb nf" x="${O2.x-4}" y="${O2.y+22}">O′</text>`;
-   if(V('pC'))s+=`<circle class="pt-tan nf" cx="${C.x}" cy="${C.y}" r="5.5"/><text class="lb nf" x="${C.x+10}" y="${C.y+5}">C</text>`;
-
-   if(calcBox){
-    calcBox.innerHTML=`<span>فاصله مرکزها: <b>d = R - R′ = ${(d/16).toFixed(1)}</b></span> <span>مماس: <b>۱ مماس (در C)</b></span>`;
-   }
   }
   else if(kind==='fig_sec'){
-   const cy=140, R=state.R, R2=state.R2, d=state.d;
-   const O={x:185,y:cy}, O2={x:O.x+d,y:cy};
+   const O={x:170,y:160}, O2={x:290,y:160}, R=72, R2=58, d=120;
    const a=(R*R-R2*R2+d*d)/(2*d);
    const h=Math.sqrt(Math.max(0,R*R-a*a));
-   const midX=O.x+a, A={x:midX,y:cy-h}, B={x:midX,y:cy+h};
+   const midX=O.x+a;
+   const A={x:midX,y:O.y-h};
+   const B={x:midX,y:O.y+h};
 
    if(V('circ1'))s+=`<circle pathLength="1" class="${c('circ1','cir-blue')}" cx="${O.x}" cy="${O.y}" r="${R}"/>`;
    if(V('circ2'))s+=`<circle pathLength="1" class="${c('circ2','cir-pur')}" cx="${O2.x}" cy="${O2.y}" r="${R2}"/>`;
-   if(V('lineOO'))s+=`<line pathLength="1" class="${c('lineOO','ln')}" style="stroke:var(--teal);stroke-width:2.4" x1="${O.x-30}" y1="${cy}" x2="${O2.x+30}" y2="${cy}"/>`;
+
+   if(V('lineOO'))s+=`<line pathLength="1" class="${c('lineOO','ln')}" style="stroke:var(--teal);stroke-width:2.4" x1="${O.x-30}" y1="${O.y}" x2="${O2.x+30}" y2="${O2.y}"/>`;
    if(V('chordAB'))s+=`<line pathLength="1" class="${c('chordAB','ln')}" style="stroke:var(--pink);stroke-width:2.6" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}"/>`;
 
    if(V('sOA'))s+=`<line pathLength="1" class="${c('sOA','ln-blue')}" x1="${O.x}" y1="${O.y}" x2="${A.x}" y2="${A.y}"/>`;
@@ -556,23 +604,17 @@ function mkFig(kind){
    if(V('sOpA'))s+=`<line pathLength="1" class="${c('sOpA','ln-pur')}" x1="${O2.x}" y1="${O2.y}" x2="${A.x}" y2="${A.y}"/>`;
    if(V('sOpB'))s+=`<line pathLength="1" class="${c('sOpB','ln-pur')}" x1="${O2.x}" y1="${O2.y}" x2="${B.x}" y2="${B.y}"/>`;
 
-   if(V('sqM'))s+=`<path class="${c('sqM','sq',1)}" d="${rightAngle({x:midX,y:cy},A,O)}"/>`;
+   if(V('sqM'))s+=`<path class="${c('sqM','sq',1)}" d="${rightAngle({x:midX,y:O.y},A,O)}"/>`;
 
    if(V('pO'))s+=`<circle class="pt-blue nf" cx="${O.x}" cy="${O.y}" r="5"/><text class="lb nf" x="${O.x-10}" y="${O.y-10}">O</text>`;
    if(V('pOp'))s+=`<circle class="pt-pur nf" cx="${O2.x}" cy="${O2.y}" r="5"/><text class="lb nf" x="${O2.x+6}" y="${O2.y-10}">O′</text>`;
    if(V('pA'))s+=`<circle class="pt-tan nf" cx="${A.x}" cy="${A.y}" r="4.5"/><text class="lb nf" x="${A.x-4}" y="${A.y-10}">A</text>`;
    if(V('pB'))s+=`<circle class="pt-tan nf" cx="${B.x}" cy="${B.y}" r="4.5"/><text class="lb nf" x="${B.x-4}" y="${B.y+22}">B</text>`;
-   if(V('pM'))s+=`<circle class="pt nf" cx="${midX}" cy="${cy}" r="3.5"/><text class="lb nf" x="${midX+5}" y="${cy+18}">M</text>`;
-
-   if(calcBox){
-    calcBox.innerHTML=`<span>نصف وتر: <b>AM = ${(h/16).toFixed(1)}</b></span> <span>کل وتر: <b>AB = ${((2*h)/16).toFixed(1)}</b></span>`;
-   }
+   if(V('pM'))s+=`<circle class="pt nf" cx="${midX}" cy="${O.y}" r="3.5"/><text class="lb nf" x="${midX+4}" y="${O.y+16}">M</text>`;
   }
 
   svg.innerHTML=s;fresh.clear();
  }
-
- buildControls();
 
  const cue=(sh,h)=>{
   (sh||'').split(' ').filter(Boolean).forEach(k=>{if(!vis.has(k)){vis.add(k);fresh.add(k)}});
